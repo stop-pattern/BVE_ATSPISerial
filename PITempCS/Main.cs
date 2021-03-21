@@ -189,7 +189,6 @@ namespace PITempCS
         static internal string GetData(string readdata)
         {
             string ret = "";
-            if (readdata == "ai") ret +=  vehicleState.I.ToString();
             switch (readdata)
             {
                 case "aa":
