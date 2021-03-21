@@ -191,32 +191,32 @@ namespace PITempCS
             string ret = "";
             switch (readdata)
             {
-                case "aa":
-                    ret += "aa" + vehicleState.Z.ToString();
+                case "Z":
+                    ret += "Z" + vehicleState.Z.ToString();
                     break;
-                case "ab":
-                    ret += "ab" + vehicleState.V.ToString();
+                case "V":
+                    ret += "V" + vehicleState.V.ToString();
                     break;
-                case "ac":
-                    ret += "ac" + vehicleState.T.ToString();
+                case "T":
+                    ret += "T" + vehicleState.T.ToString();
                     break;
-                case "ad":
-                    ret += "ad" + vehicleState.BC.ToString();
+                case "BC":
+                    ret += "BC" + vehicleState.BC.ToString();
                     break;
-                case "ae":
-                    ret += "ae" + vehicleState.MR.ToString();
+                case "MR":
+                    ret += "MR" + vehicleState.MR.ToString();
                     break;
-                case "af":
-                    ret += "af" + vehicleState.ER.ToString();
+                case "ER":
+                    ret += "ER" + vehicleState.ER.ToString();
                     break;
-                case "ag":
-                    ret += "ag" + vehicleState.BP.ToString();
+                case "BP":
+                    ret += "BP" + vehicleState.BP.ToString();
                     break;
-                case "ah":
-                    ret += "ah" + vehicleState.SAP.ToString();
+                case "SAP":
+                    ret += "SAP" + vehicleState.SAP.ToString();
                     break;
-                case "ai":
-                    ret += "ai" + vehicleState.I.ToString();
+                case "I":
+                    ret += "I" + vehicleState.I.ToString();
                     break;
                 default:
                     break;
