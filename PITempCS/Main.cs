@@ -21,6 +21,7 @@ namespace PITempCS
 
         private static SerialPort myPort = null;
         private static StringBuilder COMnumber;
+        private static bool door;
 
         static internal void Load()
         {
@@ -86,11 +87,11 @@ namespace PITempCS
 
         static internal void DoorOpen()
         {
-
+            door = true;
         }
         static internal void DoorClose()
         {
-
+            door = false;
         }
         static internal void HornBlow(int h)
         {
@@ -217,6 +218,9 @@ namespace PITempCS
                     break;
                 case "I":
                     ret += "I" + vehicleState.I.ToString();
+                    break;
+                case "D":
+                    ret += "D" + Convert.ToInt32(door).ToString();
                     break;
                 default:
                     break;
