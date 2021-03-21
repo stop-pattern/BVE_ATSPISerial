@@ -22,6 +22,7 @@ namespace PITempCS
         private static SerialPort myPort = null;
         private static StringBuilder COMnumber;
         private static bool door;
+        private static int signal;
 
         static internal void Load()
         {
@@ -99,7 +100,7 @@ namespace PITempCS
         }
         static internal void SetSignal(int s)
         {
-
+            signal = s;
         }
         static internal void SetBeaconData(Beacon b)
         {
@@ -221,6 +222,9 @@ namespace PITempCS
                     break;
                 case "D":
                     ret += "D" + Convert.ToInt32(door).ToString();
+                    break;
+                case "S":
+                    ret += "S" + signal.ToString();
                     break;
                 default:
                     break;
