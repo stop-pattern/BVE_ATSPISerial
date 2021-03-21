@@ -17,19 +17,10 @@ namespace PITempCS
         [DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileStringW", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
 
+        private static State vehicleState = new();
 
         private static SerialPort myPort = null;
         private static StringBuilder COMnumber;
-        private static StringBuilder data;
-        private static StringBuilder data1;
-        private static StringBuilder data2;
-        private static StringBuilder data3;
-        private static StringBuilder data4;
-        private static StringBuilder data5;
-        private static StringBuilder data6;
-        private static StringBuilder data7;
-        private static StringBuilder data8;
-        private static StringBuilder data9;
 
         static internal void Load()
         {
@@ -52,7 +43,6 @@ namespace PITempCS
         static internal void Dispose()
         {
             ClosePort();
-
         }
 
         static internal void GetVehicleSpec(Spec s)
@@ -66,67 +56,8 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
-            int z = (int)st.Z;
-            int spd = (int)st.V;
-            int t = st.T;
-            int bc = (int)st.BC;
-            int mr = (int)st.MR;
-            int er = (int)st.ER;
-            int bp = (int)st.BP;
-            int sap = (int)st.SAP;
-            int am = (int)st.I;
-            if (myPort == null)
-            {
-                return;
-            }
-
-
-            data1 = new StringBuilder();
-            data1.Append("aa");
-            data1.Append(z.ToString());
-            data1.Append('\n');
-
-            data2 = new StringBuilder();
-            data2.Append("ab");
-            data2.Append(spd.ToString());
-            data2.Append('\n');
-
-            data3 = new StringBuilder();
-            data3.Append("ac");
-            data3.Append(t.ToString());
-            data3.Append('\n');
-
-            data4 = new StringBuilder();
-            data4.Append("ad");
-            data4.Append(bc.ToString());
-            data4.Append('\n');
-
-            data5 = new StringBuilder();
-            data5.Append("ae");
-            data5.Append(mr.ToString());
-            data5.Append('\n');
-
-            data6 = new StringBuilder();
-            data6.Append("af");
-            data6.Append(er.ToString());
-            data6.Append('\n');
-
-            data7 = new StringBuilder();
-            data7.Append("ag");
-            data7.Append(bp.ToString());
-            data7.Append('\n');
-
-            data8 = new StringBuilder();
-            data8.Append("ah");
-            data8.Append(sap.ToString());
-            data8.Append('\n');
-
-            data9 = new StringBuilder();
-            data9.Append("ai");
-            data9.Append(am.ToString());
-            data9.Append('\n');
-
-            writePort();
+            vehicleState = st;
+            if (myPort != null) writePort();
         }
 
         static internal void SetPower(int p)
@@ -192,124 +123,29 @@ namespace PITempCS
             try
             {
                 //! 受信データを読み込む.
-                string readdata = myPort.ReadTo("\n");
-                if (readdata == "aa")
-                {
-                    try
-                    {
-                        myPort.Write(data1.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ab")
-                {
-                    try
-                    {
-                        myPort.Write(data2.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ac")
-                {
-                    try
-                    {
-                        myPort.Write(data3.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ad")
-                {
-                    try
-                    {
-                        myPort.Write(data4.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ae")
-                {
-                    try
-                    {
-                        myPort.Write(data5.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "af")
-                {
-                    try
-                    {
-                        myPort.Write(data6.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ag")
-                {
-                    try
-                    {
-                        myPort.Write(data7.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ah")
-                {
-                    try
-                    {
-                        myPort.Write(data8.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ai")
-                {
-                    try
-                    {
-                        myPort.Write(data9.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
+                string sendData = GetData(myPort.ReadTo("\n"));
 
+                if (sendData == "") return;
+
+                try
+                {
+                    myPort.Write(sendData);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    ClosePort();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
-
+            return;
         }
+
+
         static internal void OpenPort()
         {
             try
@@ -344,5 +180,50 @@ namespace PITempCS
                 myPort = null;
             }
         }
+
+        /// <summary>
+        /// COMポートから読み込んだ指令に対応した情報を返す
+        /// </summary>
+        /// <param name="readdata">read data from COM port</param>
+        /// <returns></returns>
+        static internal string GetData(string readdata)
+        {
+            string ret = "";
+            if (readdata == "ai") ret +=  vehicleState.I.ToString();
+            switch (readdata)
+            {
+                case "aa":
+                    ret += "aa" + vehicleState.Z.ToString();
+                    break;
+                case "ab":
+                    ret += "ab" + vehicleState.V.ToString();
+                    break;
+                case "ac":
+                    ret += "ac" + vehicleState.T.ToString();
+                    break;
+                case "ad":
+                    ret += "ad" + vehicleState.BC.ToString();
+                    break;
+                case "ae":
+                    ret += "ae" + vehicleState.MR.ToString();
+                    break;
+                case "af":
+                    ret += "af" + vehicleState.ER.ToString();
+                    break;
+                case "ag":
+                    ret += "ag" + vehicleState.BP.ToString();
+                    break;
+                case "ah":
+                    ret += "ah" + vehicleState.SAP.ToString();
+                    break;
+                case "ai":
+                    ret += "ai" + vehicleState.I.ToString();
+                    break;
+                default:
+                    break;
+            }
+            return ret;
+        }
+
     }
 }
