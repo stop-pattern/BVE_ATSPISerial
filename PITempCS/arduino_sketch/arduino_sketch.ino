@@ -52,7 +52,7 @@ void loop() {
   //電流計情報を要求
   Serial.print("ai\n");
   if (Serial.available()) {
-    //速度計情報を受信
+    //電流計情報を受信
     reads = Serial.readStringUntil('\n');
     if (reads.substring(0, 2) == "ai") {
       reads = reads.substring(2);
